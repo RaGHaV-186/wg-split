@@ -1,20 +1,34 @@
-# ai-dev-workflow — spec
+# wg-split spec
 
-Goal: a template repo every project starts from, with guardrails built in.
+Split shared-flat expenses from a CSV and print who pays whom.
 
 ## Done when
-1. Repo `ai-dev-workflow` exists on GitHub, visibility: public because its part of portfolio
-2. uv project, Python version: 3.14 because of using the n-1 rule as 3.15 is the latest release 
-3. `ruff check` runs and passes
-4. pre-commit runs ruff + gitleaks on every commit
-5. `.gitignore` includes `.env`
-6. `.env.example` with fake placeholder values is committed
-7. Claude Code is not allowed to read `.env`
-8. ADR-0001 and ADR-0002 are in `docs/adr/`
-9. README.md explains what this repo is for and how to start a new project from it
 
-## Test (the Judge step)
-Commit a fake API key on purpose → the commit must be blocked.
+1. Running `wg-split expenses.csv` prints one line per payment,
+   like `chris pays anna €20.00`.
+2. The CSV has a header row and 3 columns: name, category, amount.
+   Everyone who shares costs appears at least once; a 0 row is allowed.
+3. Each expense is split equally among everyone; leftover cents
+   go to the payer's own share. All payments add up to the exact cent.
+4. An empty CSV or a negative amount prints a clear error naming the
+   problem and line instead of crashing.
+5. All tests pass with `uv run pytest`.
 
-## Not in scope today
-CI (Day 5), tests (Day 4), CLAUDE.md (Day 3)
+## Test cases
+
+1. anna 100, chris 0, lucia 0
+   → chris pays anna €33.33 / lucia pays anna €33.33
+2. anna -50, chris 29, lucia 25
+   → Error: line 2 has a negative amount
+3. anna 50, lucia 50, chris 0
+   → chris pays anna €16.66 / chris pays lucia €16.66
+4. header only, no rows
+   → Error: no expenses in file
+5. anna 30, chris 30, lucia 30
+   → Nobody owes anything.
+
+## Non-goals
+
+- Does not track who has already paid back.
+- No web app (see ADR-0003).
+- No in-app bank payments.
