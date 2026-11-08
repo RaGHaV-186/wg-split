@@ -32,3 +32,18 @@ Split shared-flat expenses from a CSV and print who pays whom.
 - Does not track who has already paid back.
 - No web app (see ADR-0003).
 - No in-app bank payments.
+
+## Input rules
+
+- Amounts with more than 2 decimal places (e.g. `12.500`) are rejected with an error.
+- Names are case-insensitive; output is always lowercase.
+- The same person appearing on multiple rows is netted correctly.
+
+## Additional test cases
+
+6. anna 12.500
+   → Error: line 2 has an invalid amount (too many decimal places)
+7. Anna 60, anna 40 (same person, two rows)
+   → anna total = 100; split correctly with others
+8. ANNA 50, Chris 50
+   → output uses lowercase: anna, chris
