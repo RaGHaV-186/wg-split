@@ -1,4 +1,5 @@
 import pytest
+
 from wg_split import parse_amount, split_expenses
 
 

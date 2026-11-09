@@ -29,3 +29,9 @@ Categories: wrong-diagnosis · unrequested-decision · partial · hallucination 
 **other** · VS Code formatter on save mangled the ADR Consequences list.
 
 **other** · Template copied `ai-dev-workflow`'s SPEC.md into wg-split unchanged.
+
+## Day 4 — 2026-11-09
+
+- other · Claude (chat) gave the wrong import `from wgsplit` in the test instructions; the package is `wg_split` · caught in review against the plan's entry point `wg_split.cli:main`
+- hallucination · Agent pinned `uv_build>=0.9,<0.10`; installed uv is 0.13.7 (outdated version knowledge) · uv printed a build warning
+- agent · Agent fixed the pin with `sed` inside a chained bash command, so the edit skipped the normal diff review · spotted by reading the command in the approval prompt
