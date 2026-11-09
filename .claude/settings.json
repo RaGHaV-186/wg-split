@@ -1,6 +1,6 @@
 {
   "permissions": {
-    "defaultMode": "default",
+    "defaultMode": "manual",
     "deny": [
       "Read(./.env)",
       "Read(**/.env)",
